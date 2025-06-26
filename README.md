@@ -63,7 +63,29 @@ plt.xticks(rotation=45)
 plt.show()
 ```
 ![](reports/figures/top-ten-cities-report.png)
-3.  **Rekayasa Fitur (Feature Engineering):** Membuat fitur-fitur baru yang lebih informatif seperti klaster geografis, jumlah layanan, dan rasio finansial untuk meningkatkan performa model.
+
+3.  **Rekayasa Fitur (Feature Engineering):** Membuat fitur-fitur baru yang lebih informatif seperti jumlah layanan, rasio finansial, dan Kategori pelanggan untuk meningkatkan performa model.
+```python
+additional_services_cols = [
+    'Online Security_Yes', 
+    'Online Backup_Yes', 
+    'Device Protection_Yes',
+    'Tech Support_Yes', 
+    'Streaming TV_Yes', 
+    'Streaming Movies_Yes'
+]
+
+df['Sum Of Additional Services'] = df[additional_services_cols].sum(axis=1)
+```
+```python
+df['Monthly Charges to Tenure Ratio'] = df['Monthly Charges'] / (df['Tenure Months'] + 1)
+```
+```python
+bins = [0,12,100]
+labels = ['New Customers','Loyal Customers']
+df['Tenure Category'] = pd.cut(df['Tenure Months'], bins=bins, labels=labels, right=False)
+```
+
 4.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
 5.  **Penanganan Data Tidak Seimbang:** Menerapkan teknik SMOTE pada data training untuk mengatasi masalah kelas minoritas.
 6.  **Optimasi & Hyperparameter Tuning:** Melakukan tuning sistematis pada model ANN menggunakan KerasTuner untuk menemukan arsitektur terbaik.
