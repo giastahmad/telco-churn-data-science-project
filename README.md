@@ -27,7 +27,7 @@ Mengapa metrik ini sangat penting? Karena biaya untuk mengakuisisi pelanggan bar
 Dataset yang digunakan dalam proyek ini adalah versi modifikasi dari dataset publik "Telco Customer Churn" yang tersedia di Kaggle.
 
 * **Sumber Data Asli:** [Telco Customer Churn by Abdallah Wagih Ibrahim](https://www.kaggle.com/datasets/abdallahwagih/telco-customer-churn)
-* **Dataset yang Digunakan untuk training:** Dataset yang sudah diperkaya dan disimpan di [folder /data/processed/](./data/processed/) di repository ini.
+* **Dataset yang Digunakan untuk training:** Dataset yang sudah diperkaya dan disimpan di [folder /data/processed/](./Data/processed/) di repository ini.
 
 ## Teknologi yang Digunakan
 
