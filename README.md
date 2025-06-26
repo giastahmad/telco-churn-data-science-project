@@ -86,10 +86,149 @@ labels = ['New Customers','Loyal Customers']
 df['Tenure Category'] = pd.cut(df['Tenure Months'], bins=bins, labels=labels, right=False)
 ```
 
-4.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
-5.  **Penanganan Data Tidak Seimbang:** Menerapkan teknik SMOTE pada data training untuk mengatasi masalah kelas minoritas.
+4.  **Penanganan Data Tidak Seimbang:** Menerapkan teknik SMOTE pada data training untuk mengatasi masalah kelas minoritas.
+```python
+smote = SMOTE(random_state=42)
+x_train_resampled, y_train_resampled = smote.fit_resample(x_train_scaled, y_train)
+```
+
+5.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
+```python
+models = [
+    ('Logistic Regression', LogisticRegression()),
+    ('Decision Tree', DecisionTreeClassifier()),
+    ('Random Forest', RandomForestClassifier()),
+    ('AdaBoost Classifier', AdaBoostClassifier()),
+    ('Gradient Boosting Classifier', GradientBoostingClassifier()),
+    ('XGBClassifier', XGBClassifier()),
+    ('LGBMClassifier', LGBMClassifier(verbose=-1)),
+    ('CatBoostClassifier', CatBoostClassifier(verbose=False)),
+    ('KNN', KNeighborsClassifier())
+]
+
+results = []
+for name, model in models:
+    model.fit(x_train_resampled, y_train_resampled)
+    
+    y_train_pred = model.predict(x_train_resampled)
+    y_test_pred = model.predict(x_test_scaled)
+    
+    train_score = model.score(x_train_resampled, y_train_resampled)
+    test_score = model.score(x_test_scaled, y_test)
+    
+    accuracy = accuracy_score(y_test, y_test_pred)
+    recall = recall_score(y_test, y_test_pred)
+    precision = precision_score(y_test, y_test_pred)
+    f1 = f1_score(y_test, y_test_pred)
+    confusion = confusion_matrix(y_test, y_test_pred)
+    
+    results.append({
+       'Model': name,
+        'Accuracy': accuracy,
+        'Recall': recall,
+        'Precision': precision,
+        'F1 Score': f1
+    })
+
+results_df = pd.DataFrame(results)
+results_df_sorted = results_df.sort_values(by='Accuracy', ascending=False).reset_index(drop=True)
+display(results_df_sorted)
+
+best_model_name = results_df_sorted.iloc[0]['Model']
+best_accuracy = results_df_sorted.iloc[0]['Accuracy']
+
+print(f"\nBest Model based on Accuracy: {best_model_name}")
+print(f"Accuracy: {best_accuracy:.4f}")
+```
+
 6.  **Optimasi & Hyperparameter Tuning:** Melakukan tuning sistematis pada model ANN menggunakan KerasTuner untuk menemukan arsitektur terbaik.
-7.  **Evaluasi Model Final:** Mengevaluasi model ANN terbaik pada data uji dan melakukan optimasi *threshold* untuk memaksimalkan F1-Score.
+```python
+def build_model(hp):
+    model = Sequential()
+    
+    input_dim = x_train_resampled.shape[1]
+    model.add(Input(shape=(input_dim,)))
+
+    hp_units_1 = hp.Int('units_1', min_value=32, max_value=128, step=32)
+    model.add(Dense(units=hp_units_1, activation='relu'))
+
+    hp_dropout_1 = hp.Float('dropout_1', min_value=0.2, max_value=0.5, step=0.1)
+    model.add(Dropout(rate=hp_dropout_1))
+
+    hp_units_2 = hp.Int('units_2', min_value=16, max_value=64, step=16)
+    model.add(Dense(units=hp_units_2, activation='relu'))
+    
+    model.add(Dense(1, activation='sigmoid'))
+
+    hp_learning_rate = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])
+
+    model.compile(
+        optimizer=Adam(learning_rate=hp_learning_rate),
+        loss='binary_crossentropy',
+        metrics=['accuracy','recall']
+    )
+    
+    return model
+```
+```python
+tuner = kt.RandomSearch(
+    build_model,
+    objective=kt.Objective("val_accuracy", direction="max"),
+    max_trials=20,
+    executions_per_trial=1,
+    directory='ann_tuning',
+    project_name='churn_prediction'
+)
+```
+```python
+early_stopping = EarlyStopping(monitor='val_accuracy', patience=10, restore_best_weights=True, verbose=1)
+
+tuner.search(
+    x_train_resampled, 
+    y_train_resampled,
+    epochs=100,
+    validation_split=0.2,
+    callbacks=[early_stopping]
+)
+
+best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+```
+
+7.  **Evaluasi Model Final:** Mengevaluasi model ANN terbaik pada data uji dan melakukan optimasi *threshold* untuk memaksimalkan Accuracy.
+```python
+thresholds = np.linspace(0.0, 1.0, num=100)
+accuracies = []
+
+for thresh in thresholds:
+    y_pred_thresh = (y_pred_proba >= thresh).astype(int)
+    acc = accuracy_score(y_test, y_pred_thresh)
+    accuracies.append(acc)
+
+best_location = np.argmax(accuracies)
+best_threshold = thresholds[best_location]
+best_accuracy = accuracies[best_location]
+
+print(f"Best Threshold for Accuracy: {best_threshold:.4f}")
+print(f"Best Accuracy: {best_accuracy:.4f}")
+
+plt.figure(figsize=(10, 6))
+plt.plot(thresholds, accuracies, 'm-', label='Accuracy', linewidth=2)
+plt.axvline(x=best_threshold, color='k', linestyle='--', label=f'Optimal Threshold ({best_threshold:.2f})')
+
+plt.title('Accuracy vs. Threshold')
+plt.xlabel('Threshold')
+plt.ylabel('Accuracy')
+plt.legend(loc='best')
+plt.grid(True)
+plt.show()
+```
+```python
+y_pred_ann = (y_pred_proba > best_threshold).astype(int)
+
+accuracy_ann = accuracy_score(y_test, y_pred_ann)
+print(f"Accuracy Score ANN on Test Data: {accuracy_ann:.4f}")
+```
+
 8.  **Visualisasi Dashboard:** Membuat dashboard interaktif di Power BI untuk menyajikan insight kepada audiens bisnis.
 
 ## Insight dari Analisis Data (EDA)
