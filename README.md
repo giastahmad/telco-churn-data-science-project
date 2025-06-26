@@ -42,7 +42,12 @@ Dataset yang digunakan dalam proyek ini adalah versi modifikasi dari dataset pub
 ## Alur Kerja Proyek
 
 Proyek ini mengikuti alur kerja *end-to-end data science* yang sistematis:
-1.  **Pembersihan Data:** Menangani nilai yang hilang dan memperbaiki tipe data yang tidak konsisten.
+1.  **Pembersihan Data:** Memeriksa nilai yang hilang dan memperbaiki tipe data yang tidak konsisten.
+```python
+df.isnull().sum()
+
+df.duplicated().sum()
+```
 2.  **Analisis Data Eksploratif (EDA):** Menggali wawasan dan memahami pola dari data melalui visualisasi.
 3.  **Rekayasa Fitur (Feature Engineering):** Membuat fitur-fitur baru yang lebih informatif seperti klaster geografis, jumlah layanan, dan rasio finansial untuk meningkatkan performa model.
 4.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
