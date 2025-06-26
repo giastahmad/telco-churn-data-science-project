@@ -48,7 +48,21 @@ df.isnull().sum()
 
 df.duplicated().sum()
 ```
-2.  **Analisis Data Eksploratif (EDA):** Menggali wawasan dan memahami pola dari data melalui visualisasi.
+2.  **Analisis Data Eksploratif (EDA):** Menggali wawasan dan memahami pola dari data melalui visualisasi. salah satu contoh:
+```python
+top_10_Cities = df.City.value_counts().head(10)
+
+plt.figure(figsize=(12,6))
+plt.style.use('ggplot')
+sns.barplot(x=top_10_Cities.index, y=top_10_Cities.values, palette='viridis')  
+plt.title('Top 10 Cities')
+plt.xlabel('City')
+for i, count in enumerate(top_10_Cities.values):
+    plt.text(i, count + 15, str(count), ha='center')  
+plt.xticks(rotation=45)  
+plt.show()
+```
+[](reports/figures/top-ten-cities-report.png)
 3.  **Rekayasa Fitur (Feature Engineering):** Membuat fitur-fitur baru yang lebih informatif seperti klaster geografis, jumlah layanan, dan rasio finansial untuk meningkatkan performa model.
 4.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
 5.  **Penanganan Data Tidak Seimbang:** Menerapkan teknik SMOTE pada data training untuk mengatasi masalah kelas minoritas.
