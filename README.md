@@ -2,15 +2,15 @@
 
 ## Daftar Isi
 
-1.  [Latar Belakang & Tujuan Proyek](#-latar-belakang-tujuan-proyek)
-2.  [Apa itu Customer Churn?](#-apa-itu-customer-churn)
-3.  [Sumber Data](#-sumber-data)
-4.  [Teknologi yang Digunakan](#️-teknologi-yang-digunakan)
-5.  [Alur Kerja Proyek](#️-alur-kerja-proyek)
-6.  [Temuan Kunci dari Analisis Data (EDA)](#-temuan-kunci-dari-analisis-data-eda)
-7.  [Hasil Pemodelan Machine Learning](#-hasil-pemodelan-machine-learning)
-8.  [Dashboard Interaktif Power BI](#-dashboard-interaktif-power-bi)
-9.  [Cara Menjalankan Proyek Ini](#-cara-menjalankan-proyek-ini)
+1.  [Latar Belakang & Tujuan Proyek](#latar-belakang--tujuan-proyek)
+2.  [Apa itu Customer Churn?](#apa-itu-customer-churn)
+3.  [Sumber Data](#sumber-data)
+4.  [Teknologi yang Digunakan](#️teknologi-yang-digunakan)
+5.  [Alur Kerja Proyek](#️alur-kerja-proyek)
+6.  [Temuan Kunci dari Analisis Data (EDA)](#insight-dari-analisis-data-eda)
+7.  [Hasil Pemodelan Machine Learning](#hasil-pemodelan-machine-learning)
+8.  [Dashboard Interaktif Power BI](#dashboard-interaktif-power-bi)
+9.  [Cara Menjalankan Proyek Ini](#cara-menjalankan-proyek-ini)
 
 ## Latar Belakang & Tujuan Proyek
 
