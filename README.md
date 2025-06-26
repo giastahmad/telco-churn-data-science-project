@@ -234,7 +234,7 @@ print(f"Accuracy Score ANN on Test Data: {accuracy_ann:.4f}")
 ## Insight dari Analisis Data (EDA)
 
 * **Insight 1:** Basis pelanggan yang tergambarkan dalam dataset ini sangat didominasi oleh demografi usia non-senior (dewasa muda dan paruh baya). Ini bisa berarti strategi pemasaran dan produk perusahaan selama ini lebih berhasil menarik segmen tersebut.
-![](reports/figures/senior-citizen-customer.png)
+![](reports/figures/senior-citizen.png)
 
 * **Insight 2:** Tantangan churn yang terlihat dari data ini memiliki dua sumber utama: daya tarik kompetitor dari luar dan masalah dengan kualitas layanan perusahaan sendiri. Karena itu, upaya untuk mempertahankan pelanggan harus fokus pada kedua hal tersebut sekaligus.
 ![](reports/figures/churn-reasons.png)
