@@ -247,6 +247,11 @@ print(f"Accuracy Score ANN on Test Data: {accuracy_ann:.4f}")
 Setelah melalui beberapa tahap optimasi, termasuk *hyperparameter tuning* dan *threshold optimization*, model final **Artificial Neural Network (ANN)** berhasil mencapai performa sebagai berikut pada data uji:
 * **Accuracy : 0.8006**
 
+**Notebook Publik (Kaggle)**
+* Untuk melihat notebook dengan semua output sel yang sudah dijalankan secara interaktif, silakan kunjungi link berikut:
+* **[Buka Notebook di Kaggle](https://www.kaggle.com/code/giastahmad/telco-churn-prediction-eda-ann-tuning)**
+
+
 ## Dashboard Interaktif Power BI
 
 Berikut adalah pratinjau dari dashboard Power BI yang telah dibuat untuk visualisasi analisis churn.
