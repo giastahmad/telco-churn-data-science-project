@@ -62,7 +62,7 @@ for i, count in enumerate(top_10_Cities.values):
 plt.xticks(rotation=45)  
 plt.show()
 ```
-[](reports/figures/top-ten-cities-report.png)
+![](reports/figures/top-ten-cities-report.png)
 3.  **Rekayasa Fitur (Feature Engineering):** Membuat fitur-fitur baru yang lebih informatif seperti klaster geografis, jumlah layanan, dan rasio finansial untuk meningkatkan performa model.
 4.  **Perbandingan Model Klasik:** Menguji ~9 model machine learning klasik untuk mendapatkan *baseline* performa yang solid.
 5.  **Penanganan Data Tidak Seimbang:** Menerapkan teknik SMOTE pada data training untuk mengatasi masalah kelas minoritas.
